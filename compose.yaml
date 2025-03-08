@@ -1,0 +1,7 @@
+﻿services:
+  e-commerce-api-with-.net-8.0:
+    image: e-commerce-api-with-.net-8.0
+    build:
+      context: .
+      dockerfile:  E-Commerce-Api-with-.NET-8.0/Dockerfile
+
