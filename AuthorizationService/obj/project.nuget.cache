@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "S/IYEbXHWuM=",
+  "dgSpecHash": "mkRgGWT8AO4=",
   "success": true,
   "projectFilePath": "C:\\Users\\kaxaq\\RiderProjects\\ E-Commerce-Api-with-.NET-8.0\\AuthorizationService\\AuthorizationService.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\kaxaq\\.nuget\\packages\\fluentvalidation\\12.0.0-preview1\\fluentvalidation.12.0.0-preview1.nupkg.sha512",
     "C:\\Users\\kaxaq\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\8.0.13\\microsoft.aspnetcore.authentication.jwtbearer.8.0.13.nupkg.sha512",
     "C:\\Users\\kaxaq\\.nuget\\packages\\microsoft.extensions.apidescription.server\\6.0.5\\microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
     "C:\\Users\\kaxaq\\.nuget\\packages\\microsoft.identitymodel.abstractions\\7.1.2\\microsoft.identitymodel.abstractions.7.1.2.nupkg.sha512",

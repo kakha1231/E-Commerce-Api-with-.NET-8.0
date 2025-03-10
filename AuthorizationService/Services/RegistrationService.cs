@@ -1,6 +1,6 @@
 ﻿using System.Net.Http.Headers;
 using System.Text;
-using AuthorizationService.Dtos;
+using AuthorizationService.Dtos.Request;
 using AuthorizationService.Dtos.Response;
 using Newtonsoft.Json;
 

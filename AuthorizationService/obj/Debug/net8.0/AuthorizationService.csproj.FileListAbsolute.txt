@@ -40,3 +40,4 @@ C:\Users\kaxaq\RiderProjects\ E-Commerce-Api-with-.NET-8.0\AuthorizationService\
 C:\Users\kaxaq\RiderProjects\ E-Commerce-Api-with-.NET-8.0\AuthorizationService\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
 C:\Users\kaxaq\RiderProjects\ E-Commerce-Api-with-.NET-8.0\AuthorizationService\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
 C:\Users\kaxaq\RiderProjects\ E-Commerce-Api-with-.NET-8.0\AuthorizationService\bin\Debug\net8.0\appsettings.Docker.json
+C:\Users\kaxaq\RiderProjects\ E-Commerce-Api-with-.NET-8.0\AuthorizationService\bin\Debug\net8.0\FluentValidation.dll

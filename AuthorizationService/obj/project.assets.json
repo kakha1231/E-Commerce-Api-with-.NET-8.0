@@ -2,6 +2,19 @@
   "version": 3,
   "targets": {
     "net8.0": {
+      "FluentValidation/12.0.0-preview1": {
+        "type": "package",
+        "compile": {
+          "lib/net8.0/FluentValidation.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/FluentValidation.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "Microsoft.AspNetCore.Authentication.JwtBearer/8.0.13": {
         "type": "package",
         "dependencies": {
@@ -236,6 +249,21 @@
     }
   },
   "libraries": {
+    "FluentValidation/12.0.0-preview1": {
+      "sha512": "sFp+S7r98V0RQd6Ws9ecFTneWGGMK69XA4Wq+2ZxuNzoRTcs6AbZFyb+pfCwOUx4zgJiKf6BjcFSQrrAaxn+Dw==",
+      "type": "package",
+      "path": "fluentvalidation/12.0.0-preview1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "fluent-validation-icon.png",
+        "fluentvalidation.12.0.0-preview1.nupkg.sha512",
+        "fluentvalidation.nuspec",
+        "lib/net8.0/FluentValidation.dll",
+        "lib/net8.0/FluentValidation.xml"
+      ]
+    },
     "Microsoft.AspNetCore.Authentication.JwtBearer/8.0.13": {
       "sha512": "EUNaX3F4fALAfvp7wsCqjqziu1lTNwYRFbIcVJEt6vInWxEpscAM/pcG6GBOx3WcmSRdB7sqtKAKSkyY6XhTig==",
       "type": "package",
@@ -793,6 +821,7 @@
   },
   "projectFileDependencyGroups": {
     "net8.0": [
+      "FluentValidation >= 12.0.0-preview1",
       "Microsoft.AspNetCore.Authentication.JwtBearer >= 8.0.13",
       "Newtonsoft.Json >= 13.0.3",
       "Swashbuckle.AspNetCore >= 6.6.2"
@@ -840,6 +869,10 @@
       "net8.0": {
         "targetAlias": "net8.0",
         "dependencies": {
+          "FluentValidation": {
+            "target": "Package",
+            "version": "[12.0.0-preview1, )"
+          },
           "Microsoft.AspNetCore.Authentication.JwtBearer": {
             "target": "Package",
             "version": "[8.0.13, )"

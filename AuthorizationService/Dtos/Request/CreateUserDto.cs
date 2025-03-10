@@ -1,4 +1,4 @@
-﻿namespace AuthorizationService.Dtos;
+﻿namespace AuthorizationService.Dtos.Request;
 
 public class CreateUserDto
 {
