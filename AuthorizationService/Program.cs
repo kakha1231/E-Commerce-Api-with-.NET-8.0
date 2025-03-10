@@ -1,5 +1,9 @@
+using AuthorizationService.Dtos.Request;
 using AuthorizationService.Services;
+using AuthorizationService.Validators;
+using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,10 +16,12 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<RegistrationService>();
 
+builder.Services.AddScoped<IValidator<CreateUserDto>, CreateUserDtoValidator>();
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
-        options.Authority = "http://keycloak:8080/realms/E-Commerce";
+        options.Authority = $"http://{builder.Configuration["Keycloak:BaseUrl"]}/realms/{builder.Configuration["Keycloak:Realm"]}";
         options.Audience = "my-api-client";
         options.RequireHttpsMetadata = false;
     });
