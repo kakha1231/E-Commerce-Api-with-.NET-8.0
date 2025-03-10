@@ -38,7 +38,7 @@ public class RegistrationController : Controller
 
         if (!validationResult.IsValid)
         {
-            return BadRequest(validationResult.Errors);
+            return BadRequest(validationResult.ToDictionary());
         }
         
         var result = await _registrationService.Register(createUserDto);
