@@ -1,4 +1,17 @@
 ﻿services:
+  
+  api-gateway:
+    image: api-gateway
+    build:
+      context: .
+      dockerfile: ApiGateway/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+    networks:
+      - backend
+    ports:
+      - "5000:5000"
+      
   keycloak:
     image: quay.io/keycloak/keycloak:latest
     container_name: keycloak
@@ -12,25 +25,36 @@
       - KC_DB_USERNAME=keycloak
       - KC_DB_PASSWORD=password123
     networks:
-      - auth-network
+      - backend
       - keycloak-database
     ports:
       - "8080:8080"
     volumes:
       - keycloak-data-volume:/var/lib/keycloak/data
   
-  authorizationservice:
-    image: authorizationservice
+  authorization-service:
+    image: authorization-service
     build:
       context: .
       dockerfile: AuthorizationService/Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Docker
     networks:
-      - auth-network
+      - backend
     ports:
       - "5001:5001"
   
+  order-service:
+    image: order-service
+    build:
+      context: .
+      dockerfile: OrderService/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+    networks:
+      - backend
+    ports:
+      - "5002:5002"
   
   keycloak-db:
     image: postgres:15
@@ -50,5 +74,12 @@ volumes:
   keycloak-data-volume:
 
 networks:
+  backend:
   auth-network:
-  keycloak-database:
+  keycloak-database:  
+  
+
+
+
+
+
