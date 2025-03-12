@@ -1,6 +1,24 @@
 # This is a generated file. Not intended for manual editing.
 services:
-  authorizationservice:
+  api-gateway:
+    build:
+      context: "C:\\Users\\kaxaq\\RiderProjects\\ E-Commerce-Api-with-.NET-8.0"
+      dockerfile: "ApiGateway/Dockerfile"
+      target: "base"
+    command: []
+    entrypoint:
+    - "dotnet"
+    - "/app/bin/Debug/net8.0/ApiGateway.dll"
+    environment:
+      DOTNET_USE_POLLING_FILE_WATCHER: "true"
+    image: "api-gateway:dev"
+    ports: []
+    volumes:
+    - "C:\\Users\\kaxaq\\RiderProjects\\ E-Commerce-Api-with-.NET-8.0\\ApiGateway:/app:rw"
+    - "C:\\Users\\kaxaq\\RiderProjects\\ E-Commerce-Api-with-.NET-8.0:/src:rw"
+    - "C:\\Users\\kaxaq\\.nuget\\packages:/home/app/.nuget/packages"
+    working_dir: "/app"
+  authorization-service:
     build:
       context: "C:\\Users\\kaxaq\\RiderProjects\\ E-Commerce-Api-with-.NET-8.0"
       dockerfile: "AuthorizationService/Dockerfile"
@@ -11,10 +29,28 @@ services:
     - "/app/bin/Debug/net8.0/AuthorizationService.dll"
     environment:
       DOTNET_USE_POLLING_FILE_WATCHER: "true"
-    image: "authorizationservice:dev"
+    image: "authorization-service:dev"
     ports: []
     volumes:
     - "C:\\Users\\kaxaq\\RiderProjects\\ E-Commerce-Api-with-.NET-8.0\\AuthorizationService:/app:rw"
+    - "C:\\Users\\kaxaq\\RiderProjects\\ E-Commerce-Api-with-.NET-8.0:/src:rw"
+    - "C:\\Users\\kaxaq\\.nuget\\packages:/home/app/.nuget/packages"
+    working_dir: "/app"
+  order-service:
+    build:
+      context: "C:\\Users\\kaxaq\\RiderProjects\\ E-Commerce-Api-with-.NET-8.0"
+      dockerfile: "OrderService/Dockerfile"
+      target: "base"
+    command: []
+    entrypoint:
+    - "dotnet"
+    - "/app/bin/Debug/net8.0/OrderService.dll"
+    environment:
+      DOTNET_USE_POLLING_FILE_WATCHER: "true"
+    image: "order-service:dev"
+    ports: []
+    volumes:
+    - "C:\\Users\\kaxaq\\RiderProjects\\ E-Commerce-Api-with-.NET-8.0\\OrderService:/app:rw"
     - "C:\\Users\\kaxaq\\RiderProjects\\ E-Commerce-Api-with-.NET-8.0:/src:rw"
     - "C:\\Users\\kaxaq\\.nuget\\packages:/home/app/.nuget/packages"
     working_dir: "/app"
