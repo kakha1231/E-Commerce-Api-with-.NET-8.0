@@ -18,6 +18,27 @@
       <Content Include="..\.dockerignore">
         <Link>.dockerignore</Link>
       </Content>
+      <Content Include="bin\Debug\net8.0\appsettings.Development.json" />
+      <Content Include="bin\Debug\net8.0\appsettings.Docker.json" />
+      <Content Include="bin\Debug\net8.0\AuthorizationService.deps.json" />
+      <Content Include="bin\Debug\net8.0\AuthorizationService.dll" />
+      <Content Include="bin\Debug\net8.0\AuthorizationService.exe" />
+      <Content Include="bin\Debug\net8.0\AuthorizationService.pdb" />
+      <Content Include="bin\Debug\net8.0\AuthorizationService.runtimeconfig.json" />
+      <Content Include="bin\Debug\net8.0\FluentValidation.dll" />
+      <Content Include="bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll" />
+      <Content Include="bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll" />
+      <Content Include="bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll" />
+      <Content Include="bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll" />
+      <Content Include="bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll" />
+      <Content Include="bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll" />
+      <Content Include="bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll" />
+      <Content Include="bin\Debug\net8.0\Microsoft.OpenApi.dll" />
+      <Content Include="bin\Debug\net8.0\Newtonsoft.Json.dll" />
+      <Content Include="bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll" />
+      <Content Include="bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll" />
+      <Content Include="bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll" />
+      <Content Include="bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll" />
     </ItemGroup>
 
 </Project>
