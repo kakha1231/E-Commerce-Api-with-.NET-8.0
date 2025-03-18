@@ -1,6 +1,9 @@
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using ProductService.Dtos;
 using ProductService.Entity;
 using ProductService.Services;
+using ProductService.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +18,7 @@ builder.Services.AddDbContext<ProductDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<IProductManagementService,ProductManagementService>();
+builder.Services.AddScoped<IValidator<CreateProductDto>, CreateProductDtoValidator>();
 
 var app = builder.Build();
 
