@@ -36,21 +36,21 @@ services:
     - "C:\\Users\\kaxaq\\RiderProjects\\ E-Commerce-Api-with-.NET-8.0:/src:rw"
     - "C:\\Users\\kaxaq\\.nuget\\packages:/home/app/.nuget/packages"
     working_dir: "/app"
-  order-service:
+  product-service:
     build:
       context: "C:\\Users\\kaxaq\\RiderProjects\\ E-Commerce-Api-with-.NET-8.0"
-      dockerfile: "OrderService/Dockerfile"
+      dockerfile: "ProductService/Dockerfile"
       target: "base"
     command: []
     entrypoint:
     - "dotnet"
-    - "/app/bin/Debug/net8.0/OrderService.dll"
+    - "/app/bin/Debug/net8.0/ProductService.dll"
     environment:
       DOTNET_USE_POLLING_FILE_WATCHER: "true"
-    image: "order-service:dev"
+    image: "product-service:dev"
     ports: []
     volumes:
-    - "C:\\Users\\kaxaq\\RiderProjects\\ E-Commerce-Api-with-.NET-8.0\\OrderService:/app:rw"
+    - "C:\\Users\\kaxaq\\RiderProjects\\ E-Commerce-Api-with-.NET-8.0\\ProductService:/app:rw"
     - "C:\\Users\\kaxaq\\RiderProjects\\ E-Commerce-Api-with-.NET-8.0:/src:rw"
     - "C:\\Users\\kaxaq\\.nuget\\packages:/home/app/.nuget/packages"
     working_dir: "/app"
