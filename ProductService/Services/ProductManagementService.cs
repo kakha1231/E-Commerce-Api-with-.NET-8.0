@@ -20,10 +20,31 @@ public class ProductManagementService : IProductManagementService
         _context = context;
     }
 
-    public async Task<ServiceResponse<List<Product>>> GetProducts()
+    public async Task<ServiceResponse<List<Product>>> GetProducts(string? category, string? searchString, decimal? minPrice = 0,
+        decimal? maxPrice = 9999999, int page = 1, int pageSize = 20)
     {
-        var products = await _context.Products.ToListAsync();
+        var query = _context.Products.AsQueryable();
 
+        if (!string.IsNullOrWhiteSpace(searchString))
+        {
+            query = query.Where(p => p.Name.Contains(searchString));
+        }
+
+        if (!string.IsNullOrWhiteSpace(category))
+        {
+            var parsedcategory = Enum.Parse<Category>(category,true);
+            
+            query = query.Where(p => p.Category == parsedcategory);
+        }
+        
+        query = query.Where(p => p.Price >= minPrice && p.Price <= maxPrice && p.InStock);
+        
+        var products = await query
+            .OrderBy(p => p.Id) 
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+        
         return new ServiceResponse<List<Product>>
         {
             Success = true,

@@ -6,13 +6,21 @@ namespace ProductService.Services;
 
 public interface IProductManagementService
 {
-    
-    
+
+
     /// <summary>
-    /// Retrieves a list of all products.
+    /// Retrieves a paginated list of products with optional filtering.
     /// </summary>
-    /// <returns>A service response containing a list of products.</returns>
-    public Task<ServiceResponse<List<Product>>> GetProducts();
+    /// <param name="category">Filters products by category (optional).</param>
+    /// <param name="searchString">Search term to filter products by name or description (optional).</param>
+    /// <param name="minPrice">Minimum price filter (default: 0).</param>
+    /// <param name="maxPrice">Maximum price filter (default: 9,999,999).</param>
+    /// <param name="page">Page number for pagination (default: 1).</param>
+    /// <param name="pageSize">Number of items per page (default: 20).</param>
+    /// <returns>A service response containing a paginated list of products.</returns>
+    public Task<ServiceResponse<List<Product>>> GetProducts(string? category, string? searchString,
+        decimal? minPrice = 0,
+        decimal? maxPrice = 9999999, int page = 1, int pageSize = 20);
     
     /// <summary>
     /// Retrieves a product by its ID.

@@ -30,14 +30,21 @@ public class ProductController : Controller
     }
 
     /// <summary>
-    /// Retrieves a list of all products.
+    /// Retrieves a paginated list of products with optional filtering.
     /// </summary>
-    /// <returns>A list of products.</returns>
-    /// <response code="200">Returns the list of products.</response>
+    /// <param name="category">Filters products by category (optional).</param>
+    /// <param name="searchString">Search term to filter products by name or description (optional).</param>
+    /// <param name="minPrice">Minimum price filter (default: 0).</param>
+    /// <param name="maxPrice">Maximum price filter (default: 9,999,999).</param>
+    /// <param name="page">Page number for pagination (default: 1).</param>
+    /// <param name="pageSize">Number of items per page (default: 20).</param>
+    /// <returns>A paginated list of products that match the filter criteria.</returns>
+    /// <response code="200">Returns the filtered and paginated list of products.</response>
     [HttpGet("/products")]
-    public async Task<IActionResult> GetProducts()
+    public async Task<IActionResult> GetProducts([FromQuery] string? category, string? searchString, decimal? minPrice = 0,
+        decimal? maxPrice = 9999999, int page = 1, int pageSize = 20)
     {
-        var response = await _productManagementService.GetProducts();
+        var response = await _productManagementService.GetProducts(category, searchString, minPrice, maxPrice, page, pageSize);
         
         return Ok(response.Data);
     }
