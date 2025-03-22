@@ -43,7 +43,20 @@
       - backend
     ports:
       - "5001:5001"
-    
+        
+  orderservice:
+    image: orderservice
+    build:
+      context: .
+      dockerfile: OrderService/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+    networks:
+      - backend
+      - order-database
+    ports:
+      - "5002:5002"
+  
   product-service:
     image: product-service
     build:
@@ -82,10 +95,25 @@
       - "5433:5432"
     volumes:
       - pgdata1:/var/lib/postgresql/data
+  
+  order-db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: orderDatabase
+      POSTGRES_USER: order
+      POSTGRES_PASSWORD: password123
+    networks:
+      - order-database
+    ports:
+      - "5434:5432"
+    volumes:
+      - pgdata2:/var/lib/postgresql/data
+      
 
 volumes:
   pgdata:
   pgdata1:
+  pgdata2:
   keycloak-data-volume:
 
 networks:
@@ -93,6 +121,7 @@ networks:
   auth-network:
   keycloak-database:  
   product-database:
+  order-database:
   
 
 
@@ -101,3 +130,4 @@ networks:
 
   
 
+  
