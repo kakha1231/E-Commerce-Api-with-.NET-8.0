@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using OrderService.Dtos.Request;
 using OrderService.Models;
 using OrderService.Services;
 
@@ -33,9 +34,9 @@ public class OrderController : Controller
     }
 
     [HttpPost("/create-order")]
-    public async Task<Order> CreateOrder(Order order)
+    public async Task<Order> CreateOrder(CreateOrderDto orderDto, string userId)
     {
-        return await _orderManagementService.CreateOrder(order);
+        return await _orderManagementService.CreateOrder(orderDto, userId);
     }
     
 }

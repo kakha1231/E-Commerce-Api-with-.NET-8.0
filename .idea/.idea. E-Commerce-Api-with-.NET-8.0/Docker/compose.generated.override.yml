@@ -36,7 +36,7 @@ services:
     - "C:\\Users\\kaxaq\\RiderProjects\\ E-Commerce-Api-with-.NET-8.0:/src:rw"
     - "C:\\Users\\kaxaq\\.nuget\\packages:/home/app/.nuget/packages"
     working_dir: "/app"
-  orderservice:
+  order-service:
     build:
       context: "C:\\Users\\kaxaq\\RiderProjects\\ E-Commerce-Api-with-.NET-8.0"
       dockerfile: "OrderService/Dockerfile"
@@ -47,7 +47,7 @@ services:
     - "/app/bin/Debug/net8.0/OrderService.dll"
     environment:
       DOTNET_USE_POLLING_FILE_WATCHER: "true"
-    image: "orderservice:dev"
+    image: "order-service:dev"
     ports: []
     volumes:
     - "C:\\Users\\kaxaq\\RiderProjects\\ E-Commerce-Api-with-.NET-8.0\\OrderService:/app:rw"

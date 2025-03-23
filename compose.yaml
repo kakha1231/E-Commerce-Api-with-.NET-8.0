@@ -1,5 +1,23 @@
 ﻿services:
   
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: RabbitMQ
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 20s
+      timeout: 10s
+      retries: 3
+    restart: always
+    networks:
+      - backend
+    ports:
+      - "5672:5672"         
+      - "15672:15672"      
+  
   api-gateway:
     image: api-gateway
     build:
@@ -44,8 +62,8 @@
     ports:
       - "5001:5001"
         
-  orderservice:
-    image: orderservice
+  order-service:
+    image: order-service
     build:
       context: .
       dockerfile: OrderService/Dockerfile
@@ -108,6 +126,32 @@
       - "5434:5432"
     volumes:
       - pgdata2:/var/lib/postgresql/data
+    
+  mongo-db:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "27017:27017"  # Expose MongoDB on the default port
+    volumes:
+      - mongo_data:/data/db  # Persist MongoDB data in a named volume
+    networks:
+      - mongodb_network
+      - backend
+    
+  
+  mongo-express:
+    image: mongo-express:latest
+    container_name: mongo-express
+    ports:
+      - "8081:8081"  
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongo-db
+      - ME_CONFIG_MONGODB_PORT=27017
+    depends_on:
+       mongodb:
+         condition: service_started
+    networks:
+      - mongodb_network
       
 
 volumes:
@@ -115,6 +159,7 @@ volumes:
   pgdata1:
   pgdata2:
   keycloak-data-volume:
+  mongo_data:
 
 networks:
   backend:
@@ -122,6 +167,8 @@ networks:
   keycloak-database:  
   product-database:
   order-database:
+  mongodb_network:
+    driver: bridge
   
 
 
