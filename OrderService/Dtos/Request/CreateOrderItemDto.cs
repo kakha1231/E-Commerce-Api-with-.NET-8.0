@@ -1,6 +1,6 @@
 ﻿namespace OrderService.Dtos.Request;
 
-public class OrderItemDto
+public class CreateOrderItemDto
 {
     public int ProductId { get; set; } 
     

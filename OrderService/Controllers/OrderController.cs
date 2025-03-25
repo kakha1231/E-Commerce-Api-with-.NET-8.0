@@ -1,42 +1,55 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using OrderService.Dtos.Request;
-using OrderService.Models;
-using OrderService.Services;
+using OrderService.OrderManagement.Command.CreateOrder;
+using OrderService.OrderManagement.Query.GetOrderById;
 
 namespace OrderService.Controllers;
 
 [ApiController]
 public class OrderController : Controller
 {
-    private readonly IOrderManagementService _orderManagementService;
+    private readonly ISender _sender;
 
-    public OrderController(IOrderManagementService orderManagementService)
+    public OrderController(ISender sender)
     {
-        _orderManagementService = orderManagementService;
+        _sender = sender;
     }
 
     [HttpGet("/orders")]
-    public async Task<List<Order>> GetOrders()
+    public async Task<IActionResult> GetOrders()
     {
-        return await _orderManagementService.GetOrders();
+        return NoContent();
     }
 
     [HttpGet("/myorders")]
-    public async Task<List<Order>> GetOrdersByUserId(string userId)
+    public async Task<IActionResult> GetOrdersByUserId(string userId)
     {
-        return await _orderManagementService.GetOrdersByUserId(userId);
+        return NoContent();
     }
     
     [HttpGet("/orders/{id}")]
-    public async Task<Order> GetOrdersById(int orderId)
+    public async Task<IActionResult> GetOrderById(int id)
     {
-        return await _orderManagementService.GetOrdersById(orderId);
+        var query = new GetOrderByIdQuery(id);
+        var order = await _sender.Send(query);
+
+        return Ok(order);
     }
 
     [HttpPost("/create-order")]
-    public async Task<Order> CreateOrder(CreateOrderDto orderDto, string userId)
+    public async Task<IActionResult> CreateOrder(CreateOrderDto orderDto, string userId)
     {
-        return await _orderManagementService.CreateOrder(orderDto, userId);
-    }
+        var command = new CreateOrderCommand(userId, orderDto);
+        var order = await _sender.Send(command);
     
+        return Ok(order);
+    }
+
+    [HttpPut("/update-order/{id}")]
+    public async Task<IActionResult> UpdateOrderStatus(string status, int id)
+    {
+        return NoContent();
+        
+    }
 }

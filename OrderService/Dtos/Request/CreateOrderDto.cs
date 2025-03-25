@@ -4,7 +4,7 @@ namespace OrderService.Dtos.Request;
 
 public class CreateOrderDto
 {
-    public List<OrderItemDto> Items { get; set; } = [];
+    public List<CreateOrderItemDto> Items { get; set; } = [];
     
     public ShippingInfoDto Shipping { get; set; }
 }

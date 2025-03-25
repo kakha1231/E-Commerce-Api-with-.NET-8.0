@@ -22,4 +22,26 @@ public class ShippingInfo
     
     public int OrderId { get; set; }
     public Order Order { get; set; }
+    
+    private ShippingInfo() { }
+    
+    public ShippingInfo(
+        string contactName,
+        string phone,
+        string address,
+        string city,
+        string state,
+        string zipCode,
+        string country,
+        string courier)
+    {
+        ContactName = contactName;
+        Phone = phone;
+        Address = address;
+        City = city;
+        State = state;
+        ZipCode = zipCode;
+        Country = country;
+        Courier = courier;
+    }
 }

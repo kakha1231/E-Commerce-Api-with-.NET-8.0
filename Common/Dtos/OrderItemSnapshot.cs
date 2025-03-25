@@ -1,6 +1,6 @@
 ﻿namespace Common.Dtos;
 
-public class OrderItemEventDto
+public class OrderItemSnapshot
 {
     public int Productid { get; set; }
     

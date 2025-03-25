@@ -1,9 +1,11 @@
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using MongoDB.Driver;
-using OrderService.Consumers;
 using OrderService.Entity;
-using OrderService.Services;
+using OrderService.EventStore;
+using OrderService.Messages.Publishers;
+using OrderService.OrderManagement.Command.CreateOrder;
+using OrderService.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,18 +26,24 @@ builder.Services.AddDbContext<OrderDbContext>(options =>
 
 builder.Services.AddSingleton<IMongoClient>(sp =>
     new MongoClient(builder.Configuration["MongoDB:ConnectionString"]));
-builder.Services.AddSingleton(sp =>
-    sp.GetRequiredService<IMongoClient>().GetDatabase("ReadDatabase"));
 
-builder.Services.AddScoped<IOrderManagementService, OrderManagementService>();
+builder.Services.AddSingleton<MongoEventStore>(sp =>
+{
+    var mongoClient = sp.GetRequiredService<IMongoClient>();
+    var eventStoreDatabase = mongoClient.GetDatabase("EventStoreDatabase");
+    return new MongoEventStore(eventStoreDatabase);
+});
 
+builder.Services.AddScoped<OrderEventPublisher>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+
+
+builder.Services.AddMediatR(cfg =>
+    cfg.RegisterServicesFromAssembly(typeof(CreateOrderCommand).Assembly));
 
 builder.Services.AddMassTransit(busConfigurator =>
 {
     busConfigurator.SetKebabCaseEndpointNameFormatter();
-
-    busConfigurator.AddConsumer<OrderCreatedEventConsumer>();
-
     busConfigurator.UsingRabbitMq((context, configurator) =>
     {
         configurator.Host(builder.Configuration["MessageBroker:Host"], host =>
