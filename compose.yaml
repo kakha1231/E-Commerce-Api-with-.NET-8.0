@@ -72,6 +72,7 @@
     networks:
       - backend
       - order-database
+      - event-network
     ports:
       - "5002:5002"
   
@@ -127,31 +128,22 @@
     volumes:
       - pgdata2:/var/lib/postgresql/data
     
-  mongo-db:
-    image: mongo:latest
-    container_name: mongodb
-    ports:
-      - "27017:27017" 
-    volumes:
-      - mongo_data:/data/db  
-    networks:
-      - mongodb_network
-      - backend
-    
-  
-  mongo-express:
-    image: mongo-express:latest
-    container_name: mongo-express
-    ports:
-      - "8081:8081"  # Admin UI
+  eventstore:
+    image: eventstore/eventstore:latest
+    container_name: eventstore
+    restart: always
     environment:
-      - ME_CONFIG_MONGODB_SERVER=mongo-db
-      - ME_CONFIG_MONGODB_PORT=27017
-    depends_on:
-       mongo-db:
-         condition: service_started
+      - EVENTSTORE_CLUSTER_SIZE=1
+      - EVENTSTORE_RUN_PROJECTIONS=All
+      - EVENTSTORE_START_STANDARD_PROJECTIONS=true
+      - EVENTSTORE_HTTP_PORT=2113
+      - EVENTSTORE_INSECURE=true
     networks:
-      - mongodb_network
+      - event-network
+    ports:
+      - "2113:2113" # HTTP API
+    volumes:
+      - eventstore-data:/var/lib/eventstore
 
 
 volumes:
@@ -159,7 +151,8 @@ volumes:
   pgdata1:
   pgdata2:
   keycloak-data-volume:
-  mongo_data:
+  eventstore-data:
+    
 
 networks:
   backend:
@@ -167,7 +160,7 @@ networks:
   keycloak-database:  
   product-database:
   order-database:
-  mongodb_network:
+  event-network:
     driver: bridge
   
 

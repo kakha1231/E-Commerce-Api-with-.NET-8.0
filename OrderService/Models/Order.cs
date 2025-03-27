@@ -12,6 +12,7 @@ public class Order
     public IReadOnlyCollection<OrderItem> Items => _items.AsReadOnly();
     public OrderStatus Status { get; private set; } = OrderStatus.Pending;
     public ShippingInfo Shipping { get; private set; }
+    
     public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
     public DateTime UpdatedAt { get; private set; }
     

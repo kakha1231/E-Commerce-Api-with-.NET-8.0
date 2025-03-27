@@ -9,8 +9,6 @@ using OrderService.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
@@ -25,19 +23,9 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<OrderDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddSingleton<IMongoClient>(sp =>
-    new MongoClient(builder.Configuration["MongoDB:ConnectionString"]));
-
-builder.Services.AddSingleton<MongoEventStore>(sp =>
-{
-    var mongoClient = sp.GetRequiredService<IMongoClient>();
-    var eventStoreDatabase = mongoClient.GetDatabase("EventStoreDatabase");
-    return new MongoEventStore(eventStoreDatabase);
-});
-
 builder.Services.AddScoped<OrderEventPublisher>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
-
+builder.Services.AddSingleton<IEventStoreRepository, EventStoreRepository>();
 
 builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssembly(typeof(CreateOrderCommand).Assembly));

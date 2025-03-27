@@ -1,6 +1,7 @@
 ﻿using Common.Dtos;
 using Common.Events;
 using MediatR;
+using OrderService.EventStore;
 using OrderService.Messages.Publishers;
 using OrderService.Models;
 using OrderService.Repository;
@@ -11,11 +12,13 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Ord
 {
     private readonly IOrderRepository _orderRepository;
     private readonly OrderEventPublisher _orderEventPublisher;
+    private readonly IEventStoreRepository _eventStoreRepository;
 
-    public CreateOrderCommandHandler(IOrderRepository orderRepository, OrderEventPublisher orderEventPublisher)
+    public CreateOrderCommandHandler(IOrderRepository orderRepository, OrderEventPublisher orderEventPublisher, IEventStoreRepository eventStoreRepository)
     {
         _orderRepository = orderRepository;
         _orderEventPublisher = orderEventPublisher;
+        _eventStoreRepository = eventStoreRepository;
     }
 
     public async Task<Order> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
@@ -36,7 +39,8 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Ord
                 Quantity = it.Quantity,
             }).ToList(),
         };
-        
+         
+        await _eventStoreRepository.SaveEventAsync(orderCreatedEvent, $"order-{order.Id}");
         await _orderEventPublisher.PublishOrderCreatedAsync(orderCreatedEvent);
         
         return order;
