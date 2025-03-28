@@ -10,6 +10,8 @@
     <ItemGroup>
         <PackageReference Include="EventStore.Client.Grpc" Version="23.3.8" />
         <PackageReference Include="EventStore.Client.Grpc.Streams" Version="23.3.8" />
+        <PackageReference Include="Mapster" Version="7.4.2-pre02" />
+        <PackageReference Include="Mapster.DependencyInjection" Version="1.0.3-pre02" />
         <PackageReference Include="MassTransit.RabbitMQ" Version="8.4.1-develop.2245" />
         <PackageReference Include="MediatR" Version="12.4.1" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.14" />
@@ -17,7 +19,6 @@
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="MongoDB.Driver" Version="3.2.1" />
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.11" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2"/>
     </ItemGroup>
@@ -33,7 +34,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="OrderManagement\" />
+      <Folder Include="Application\Commands\" />
+      <Folder Include="Presentation\" />
     </ItemGroup>
 
 </Project>

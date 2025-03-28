@@ -1,11 +1,13 @@
+using System.Reflection;
+using Mapster;
+using MapsterMapper;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
-using MongoDB.Driver;
-using OrderService.Entity;
-using OrderService.EventStore;
-using OrderService.Messages.Publishers;
-using OrderService.OrderManagement.Command.CreateOrder;
-using OrderService.Repository;
+using OrderService.Application.Commands.CreateOrder;
+using OrderService.Application.Mapping;
+using OrderService.Infrastructure.Data;
+using OrderService.Infrastructure.EventStore;
+using OrderService.Infrastructure.Messages.Publishers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +21,12 @@ builder.Services.AddControllers()
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+var config = TypeAdapterConfig.GlobalSettings;
+config.Scan(Assembly.GetExecutingAssembly());
+        
+builder.Services.AddSingleton(config);
+builder.Services.AddMapping();
+
 
 builder.Services.AddDbContext<OrderDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -29,6 +37,8 @@ builder.Services.AddSingleton<IEventStoreRepository, EventStoreRepository>();
 
 builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssembly(typeof(CreateOrderCommand).Assembly));
+
+
 
 builder.Services.AddMassTransit(busConfigurator =>
 {

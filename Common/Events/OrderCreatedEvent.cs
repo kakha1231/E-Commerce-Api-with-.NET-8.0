@@ -1,5 +1,6 @@
 ﻿using Common.Dtos;
 using Common.Enums;
+using OrderService.Application.Dtos.Request;
 
 namespace Common.Events;
 
@@ -15,6 +16,6 @@ public class OrderCreatedEvent : IEvent
     
     public OrderStatus Status { get; set; }
    
-    public List<OrderItemSnapshot> Items { get; set; } = [];
+    public List<OrderItemDto> Items { get; set; } = [];
     
 }
