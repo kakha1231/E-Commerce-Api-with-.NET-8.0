@@ -2,21 +2,18 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using OrderService.Infrastructure.Data;
 
 #nullable disable
 
-namespace OrderService.Migrations
+namespace OrderService.Infrastructure.Migrations
 {
     [DbContext(typeof(OrderDbContext))]
-    [Migration("20250322184351_init")]
-    partial class init
+    partial class OrderDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,7 +22,7 @@ namespace OrderService.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("OrderService.Models.Order", b =>
+            modelBuilder.Entity("OrderService.Domain.Agregates.Order", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -51,7 +48,7 @@ namespace OrderService.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("OrderService.Models.OrderItem", b =>
+            modelBuilder.Entity("OrderService.Domain.Entities.OrderItem", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -82,60 +79,60 @@ namespace OrderService.Migrations
                     b.ToTable("OrderItems");
                 });
 
-            modelBuilder.Entity("OrderService.Models.ShippingInfo", b =>
+            modelBuilder.Entity("OrderService.Domain.Agregates.Order", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                    b.OwnsOne("OrderService.Domain.ValueObjects.ShippingInfo", "Shipping", b1 =>
+                        {
+                            b1.Property<int>("OrderId")
+                                .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                            b1.Property<string>("Address")
+                                .IsRequired()
+                                .HasColumnType("text");
 
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("text");
+                            b1.Property<string>("City")
+                                .IsRequired()
+                                .HasColumnType("text");
 
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasColumnType("text");
+                            b1.Property<string>("ContactName")
+                                .IsRequired()
+                                .HasColumnType("text");
 
-                    b.Property<string>("ContactName")
-                        .IsRequired()
-                        .HasColumnType("text");
+                            b1.Property<string>("Country")
+                                .IsRequired()
+                                .HasColumnType("text");
 
-                    b.Property<string>("Country")
-                        .IsRequired()
-                        .HasColumnType("text");
+                            b1.Property<string>("Courier")
+                                .IsRequired()
+                                .HasColumnType("text");
 
-                    b.Property<string>("Courier")
-                        .IsRequired()
-                        .HasColumnType("text");
+                            b1.Property<string>("Phone")
+                                .IsRequired()
+                                .HasColumnType("text");
 
-                    b.Property<int>("OrderId")
-                        .HasColumnType("integer");
+                            b1.Property<string>("State")
+                                .IsRequired()
+                                .HasColumnType("text");
 
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasColumnType("text");
+                            b1.Property<string>("ZipCode")
+                                .IsRequired()
+                                .HasColumnType("text");
 
-                    b.Property<string>("State")
-                        .IsRequired()
-                        .HasColumnType("text");
+                            b1.HasKey("OrderId");
 
-                    b.Property<string>("ZipCode")
-                        .IsRequired()
-                        .HasColumnType("text");
+                            b1.ToTable("Orders");
 
-                    b.HasKey("Id");
+                            b1.WithOwner()
+                                .HasForeignKey("OrderId");
+                        });
 
-                    b.HasIndex("OrderId")
-                        .IsUnique();
-
-                    b.ToTable("ShippingInfos");
+                    b.Navigation("Shipping")
+                        .IsRequired();
                 });
 
-            modelBuilder.Entity("OrderService.Models.OrderItem", b =>
+            modelBuilder.Entity("OrderService.Domain.Entities.OrderItem", b =>
                 {
-                    b.HasOne("OrderService.Models.Order", "Order")
+                    b.HasOne("OrderService.Domain.Agregates.Order", "Order")
                         .WithMany("Items")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -144,23 +141,9 @@ namespace OrderService.Migrations
                     b.Navigation("Order");
                 });
 
-            modelBuilder.Entity("OrderService.Models.ShippingInfo", b =>
-                {
-                    b.HasOne("OrderService.Models.Order", "Order")
-                        .WithOne("Shipping")
-                        .HasForeignKey("OrderService.Models.ShippingInfo", "OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Order");
-                });
-
-            modelBuilder.Entity("OrderService.Models.Order", b =>
+            modelBuilder.Entity("OrderService.Domain.Agregates.Order", b =>
                 {
                     b.Navigation("Items");
-
-                    b.Navigation("Shipping")
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

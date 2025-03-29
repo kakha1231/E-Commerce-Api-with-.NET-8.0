@@ -9,7 +9,6 @@ public class OrderDbContext : DbContext
 {
     public DbSet<Order> Orders { get; set; }
     public DbSet<OrderItem> OrderItems { get; set; }
-    public DbSet<ShippingInfo> ShippingInfos { get; set; }
     
     public OrderDbContext(DbContextOptions<OrderDbContext> options) : base(options)
     {
@@ -27,9 +26,18 @@ public class OrderDbContext : DbContext
             .OnDelete(DeleteBehavior.Cascade);
         
         modelBuilder.Entity<Order>()
-            .HasOne(order => order.Shipping)
-            .WithOne(shipping => shipping.Order)
-            .OnDelete(DeleteBehavior.Cascade);
+            .OwnsOne(o => o.Shipping, shipping => // Configure ShippingInfo as an owned entity
+            {
+                shipping.Property(s => s.ContactName).IsRequired();
+                shipping.Property(s => s.Phone).IsRequired();
+                shipping.Property(s => s.Address).IsRequired();
+                shipping.Property(s => s.City).IsRequired();
+                shipping.Property(s => s.State).IsRequired();
+                shipping.Property(s => s.ZipCode).IsRequired();
+                shipping.Property(s => s.Country).IsRequired();
+                shipping.Property(s => s.Courier).IsRequired();
+            });
+        
     }
     
 }
