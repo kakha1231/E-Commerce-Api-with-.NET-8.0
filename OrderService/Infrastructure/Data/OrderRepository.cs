@@ -35,7 +35,6 @@ public class OrderRepository : IOrderRepository
     public async Task<List<Order>> GetOrdersByUserId(string userId)
     {
         var orders = await _context.Orders.Include(order => order.Items)
-            .Include(or => or.Shipping)
             .Where(order => order.UserId == userId).ToListAsync();
         
         return orders;
