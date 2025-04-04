@@ -128,23 +128,6 @@
     volumes:
       - pgdata2:/var/lib/postgresql/data
     
-  eventstore:
-    image: eventstore/eventstore:latest
-    container_name: eventstore
-    restart: always
-    environment:
-      - EVENTSTORE_CLUSTER_SIZE=1
-      - EVENTSTORE_RUN_PROJECTIONS=All
-      - EVENTSTORE_START_STANDARD_PROJECTIONS=true
-      - EVENTSTORE_HTTP_PORT=2113
-      - EVENTSTORE_INSECURE=true
-    networks:
-      - event-network
-    ports:
-      - "2113:2113" # HTTP API
-    volumes:
-      - eventstore-data:/var/lib/eventstore
-
 
 volumes:
   pgdata:

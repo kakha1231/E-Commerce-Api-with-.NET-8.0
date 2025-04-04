@@ -1,7 +1,6 @@
 ﻿using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using OrderService.Infrastructure.Data;
-using OrderService.Infrastructure.EventStore;
 using OrderService.Infrastructure.Messages.Publishers;
 
 namespace OrderService.Infrastructure;
@@ -14,7 +13,6 @@ public static class DependencyInjection
         
         services.AddScoped<OrderEventPublisher>();
         services.AddScoped<IOrderRepository, OrderRepository>();
-        services.AddSingleton<IEventStoreRepository, EventStoreRepository>();
         
         
         services.AddDbContext<OrderDbContext>(options =>

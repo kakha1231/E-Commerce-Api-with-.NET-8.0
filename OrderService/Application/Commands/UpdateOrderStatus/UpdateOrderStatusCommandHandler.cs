@@ -1,12 +1,14 @@
 ﻿using Common.Enums;
+using ErrorOr;
 using MediatR;
 using OrderService.Domain.Agregates;
+using OrderService.Domain.Errors;
 using OrderService.Infrastructure.Data;
 
 namespace OrderService.Application.Commands.UpdateOrderStatus;
 
 public class UpdateOrderStatusCommandHandler : 
-    IRequestHandler<UpdateOrderStatusCommand, Order>
+    IRequestHandler<UpdateOrderStatusCommand, ErrorOr<Order>>
 {
     private readonly IOrderRepository _orderRepository;
 
@@ -15,13 +17,13 @@ public class UpdateOrderStatusCommandHandler :
         _orderRepository = orderRepository;
     }
 
-    public async Task<Order> Handle(UpdateOrderStatusCommand request, CancellationToken cancellationToken)
+    public async Task< ErrorOr<Order>> Handle(UpdateOrderStatusCommand request, CancellationToken cancellationToken)
     {
         var order = await _orderRepository.GetOrderById(request.OrderId);
         
         if (order == null)
         {
-            throw new Exception("Order not found");
+            return Errors.OrderNotFound;
         }
         
         var parsedStatus = Enum.Parse<OrderStatus>(request.OrderStatus,true);

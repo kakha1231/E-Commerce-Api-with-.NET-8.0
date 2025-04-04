@@ -1,6 +1,7 @@
-﻿using MediatR;
+﻿using ErrorOr;
+using MediatR;
 using OrderService.Domain.Agregates;
 
 namespace OrderService.Application.Commands.UpdateOrderStatus;
 
-public record UpdateOrderStatusCommand(int OrderId, string OrderStatus) : IRequest<Order>;
+public record UpdateOrderStatusCommand(int OrderId, string OrderStatus) : IRequest<ErrorOr<Order>>;

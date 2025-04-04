@@ -12,16 +12,11 @@ public class OrderRepository : IOrderRepository
         _context = context;
     }
 
-    public async Task<Order> GetOrderById(int orderId)
+    public async Task<Order?> GetOrderById(int orderId)
     {
         var order = await _context.Orders.Include(order => order.Items)
-            .Include(or => or.Shipping)
             .Where(order => order.Id == orderId).FirstOrDefaultAsync();
-        
-        if (order == null)
-        {
-            return null;
-        }
+
         return order;
     }
 

@@ -26,7 +26,7 @@ public class OrderDbContext : DbContext
             .OnDelete(DeleteBehavior.Cascade);
         
         modelBuilder.Entity<Order>()
-            .OwnsOne(o => o.Shipping, shipping => // Configure ShippingInfo as an owned entity
+            .ComplexProperty(o => o.Shipping, shipping => // Configure ShippingInfo as an owned entity
             {
                 shipping.Property(s => s.ContactName).IsRequired();
                 shipping.Property(s => s.Phone).IsRequired();

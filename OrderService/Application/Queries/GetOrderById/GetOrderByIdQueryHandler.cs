@@ -1,10 +1,12 @@
-﻿using MediatR;
+﻿using ErrorOr;
+using MediatR;
 using OrderService.Domain.Agregates;
+using OrderService.Domain.Errors;
 using OrderService.Infrastructure.Data;
 
 namespace OrderService.Application.Queries.GetOrderById;
 
-public class GetOrderByIdQueryHandler : IRequestHandler<GetOrderByIdQuery, Order>
+public class GetOrderByIdQueryHandler : IRequestHandler<GetOrderByIdQuery, ErrorOr<Order>>
 {
     
     private readonly IOrderRepository _orderRepository;
@@ -14,9 +16,14 @@ public class GetOrderByIdQueryHandler : IRequestHandler<GetOrderByIdQuery, Order
         _orderRepository = orderRepository;
     }
 
-    public async Task<Order> Handle(GetOrderByIdQuery request, CancellationToken cancellationToken)
+    public async Task<ErrorOr<Order>> Handle(GetOrderByIdQuery request, CancellationToken cancellationToken)
     {
        var order = await _orderRepository.GetOrderById(request.OrderId);
+
+       if (order == null)
+       {
+           return Errors.OrderNotFound;
+       }
        
        return order;
     }
