@@ -1,4 +1,5 @@
 ﻿using Common.Events;
+using ErrorOr;
 using Mapster;
 using MapsterMapper;
 using MediatR;
@@ -8,7 +9,7 @@ using OrderService.Infrastructure.Messages.Publishers;
 
 namespace OrderService.Application.Commands.CreateOrder;
 
-public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Order>
+public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, ErrorOr<Order>>
 {
     private readonly IOrderRepository _orderRepository;
     private readonly OrderEventPublisher _orderEventPublisher;
@@ -21,7 +22,7 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Ord
         _mapper = mapper;
     }
 
-    public async Task<Order> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
+    public async Task<ErrorOr<Order>> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
     {
         var sourceTuple = (request.Order, request.UserId);
         var order = _mapper.Map<Order>(sourceTuple);

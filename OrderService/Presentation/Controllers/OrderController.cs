@@ -2,6 +2,7 @@
 using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using OrderService.Application.Commands.CreateOrder;
 using OrderService.Application.Commands.UpdateOrderStatus;
 using OrderService.Application.Dtos.Request;
@@ -75,28 +76,32 @@ public class OrderController : ControllerBase
     /// Creates a new order.
     /// </summary>
     /// <param name="orderDto">The order data transfer object.</param>
-    /// <param name="userId">The user ID of the order creator.</param>
+    /// <param name="userId">The unique identifier of the user creating the order.</param>
     /// <returns>The newly created order.</returns>
-    /// <response code="200">Returns the created order.</response>
+    /// <response code="200">Successfully creates and returns the new order.</response>
+    /// <response code="400">If the request is invalid.</response>
     [HttpPost("/create-order")]
     public async Task<IActionResult> CreateOrder(CreateOrderDto orderDto, string userId)
     {
         var command = new CreateOrderCommand(userId, orderDto);
         
-        var order = await _sender.Send(command);
+        var result = await _sender.Send(command);
         
-        return Ok(order);
+        return result.Match(
+            order => Ok(order),
+            Problem);
     }
 
     
     /// <summary>
     /// Updates the status of an order.
     /// </summary>
-    /// <param name="status">The new order status.</param>
-    /// <param name="id">The order ID.</param>
+    /// <param name="status">The new status for the order (e.g., "Pending", "Shipped").</param>
+    /// <param name="id">The unique identifier of the order.</param>
     /// <returns>The updated order.</returns>
-    /// <response code="200">Returns the updated order.</response>
-    /// <response code="404">Order not found.</response>
+    /// <response code="200">Successfully updates and returns the order.</response>
+    /// <response code="404">If the order with the given ID is not found.</response>
+    /// <response code="400">If the status provided is invalid.</response>
     [HttpPut("/update-order/{id}")]
     public async Task<IActionResult> UpdateOrderStatus(string status, int id)
     {
@@ -129,6 +134,20 @@ public class OrderController : ControllerBase
     /// </remarks>
     private IActionResult Problem(List<Error> errors)
     {
+
+        if (errors.All(error => error.Type == ErrorType.Validation))
+        {
+            var modelStateDictionary = new ModelStateDictionary();
+
+            foreach (var err in errors)
+            {
+                modelStateDictionary.AddModelError(
+                    err.Code,
+                    err.Description);
+            }
+
+            return ValidationProblem(modelStateDictionary);
+        }
         var firstError = errors.First();
 
         var statusCode = firstError.Type switch
