@@ -21,6 +21,17 @@
       ],
       "UpstreamPathTemplate": "/product/{everything}",
       "UpstreamHttpMethod": [ "Get","Put","Post","Delete" ]
+    },
+    {
+      "DownstreamPathTemplate": "/{everything}",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "order-service",
+          "Port": 5002
+        }
+      ],
+      "UpstreamPathTemplate": "/order/{everything}",
+      "UpstreamHttpMethod": [ "Get","Put","Post" ]
     }
   ],
   
