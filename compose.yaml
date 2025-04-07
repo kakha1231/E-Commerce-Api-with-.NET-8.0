@@ -1,5 +1,23 @@
 ﻿services:
   
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: RabbitMQ
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 20s
+      timeout: 10s
+      retries: 3
+    restart: always
+    networks:
+      - backend
+    ports:
+      - "5672:5672"         
+      - "15672:15672"      
+  
   api-gateway:
     image: api-gateway
     build:
@@ -43,7 +61,21 @@
       - backend
     ports:
       - "5001:5001"
-    
+        
+  order-service:
+    image: order-service
+    build:
+      context: .
+      dockerfile: OrderService/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+    networks:
+      - backend
+      - order-database
+      - event-network
+    ports:
+      - "5002:5002"
+  
   product-service:
     image: product-service
     build:
@@ -82,17 +114,37 @@
       - "5433:5432"
     volumes:
       - pgdata1:/var/lib/postgresql/data
+  
+  order-db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: orderDatabase
+      POSTGRES_USER: order
+      POSTGRES_PASSWORD: password123
+    networks:
+      - order-database
+    ports:
+      - "5434:5432"
+    volumes:
+      - pgdata2:/var/lib/postgresql/data
+    
 
 volumes:
   pgdata:
   pgdata1:
+  pgdata2:
   keycloak-data-volume:
+  eventstore-data:
+    
 
 networks:
   backend:
   auth-network:
   keycloak-database:  
   product-database:
+  order-database:
+  event-network:
+    driver: bridge
   
 
 
@@ -101,3 +153,4 @@ networks:
 
   
 
+  
