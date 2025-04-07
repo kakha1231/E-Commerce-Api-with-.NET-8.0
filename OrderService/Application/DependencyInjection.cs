@@ -1,19 +1,14 @@
 ﻿using System.Reflection;
-using ErrorOr;
 using FluentValidation;
 using Mapster;
 using MapsterMapper;
-using MediatR;
-using OrderService.Application.Commands.CreateOrder;
 using OrderService.Application.Common.Behaviors;
-using OrderService.Domain.Agregates;
 
 namespace OrderService.Application;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddApplicationServices(this IServiceCollection services,
-        IConfiguration configuration)
+    public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
         var config = TypeAdapterConfig.GlobalSettings;
         config.Scan(Assembly.GetExecutingAssembly());
