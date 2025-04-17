@@ -1,25 +1,23 @@
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
-using ProductService.Dtos;
-using ProductService.Entity;
-using ProductService.Middlewares;
-using ProductService.Services;
-using ProductService.Validators;
+using ProductService.Application;
+using ProductService.Application.Dtos.Request;
+using ProductService.Application.Services;
+using ProductService.Infrastructure;
+using ProductService.Infrastructure.Entity;
+using ProductService.Presentation;
+using ProductService.Presentation.Middlewares;
+using ProductService.Presentation.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<ProductDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-builder.Services.AddScoped<IProductManagementService,ProductManagementService>();
-builder.Services.AddScoped<IValidator<CreateProductDto>, CreateProductDtoValidator>();
+builder.Services
+    .AddApplicationServices()
+    .AddInfrastructureServices(builder.Configuration)
+    .AddPresentation();
 
 var app = builder.Build();
 

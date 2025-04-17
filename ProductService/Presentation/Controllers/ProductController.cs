@@ -1,11 +1,9 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
-using ProductService.Dtos;
-using ProductService.Models;
-using ProductService.Services;
-using ProductService.Validators;
+using ProductService.Application.Dtos.Request;
+using ProductService.Application.Services;
 
-namespace ProductService.Controllers;
+namespace ProductService.Presentation.Controllers;
 
 
 /// <summary>

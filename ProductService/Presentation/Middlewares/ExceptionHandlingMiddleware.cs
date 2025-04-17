@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using Newtonsoft.Json;
 
-namespace ProductService.Middlewares;
+namespace ProductService.Presentation.Middlewares;
 
 public class ExceptionHandlingMiddleware
 {

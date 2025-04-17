@@ -1,8 +1,8 @@
 ﻿using Common.Dtos.Response;
-using ProductService.Dtos;
-using ProductService.Models;
+using ProductService.Application.Dtos.Request;
+using ProductService.Domain.Models;
 
-namespace ProductService.Services;
+namespace ProductService.Application.Services;
 
 public interface IProductManagementService
 {

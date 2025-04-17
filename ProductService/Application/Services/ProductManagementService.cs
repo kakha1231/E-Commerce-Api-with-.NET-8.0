@@ -1,11 +1,11 @@
 ﻿using Common.Dtos.Response;
 using Common.Enums;
 using Microsoft.EntityFrameworkCore;
-using ProductService.Dtos;
-using ProductService.Entity;
-using ProductService.Models;
+using ProductService.Application.Dtos.Request;
+using ProductService.Domain.Models;
+using ProductService.Infrastructure.Entity;
 
-namespace ProductService.Services;
+namespace ProductService.Application.Services;
 
 public class ProductManagementService : IProductManagementService
 {

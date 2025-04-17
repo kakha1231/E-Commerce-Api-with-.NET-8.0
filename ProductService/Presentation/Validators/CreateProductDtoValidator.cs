@@ -1,9 +1,8 @@
-﻿using System.Data;
-using Common.Enums;
+﻿using Common.Enums;
 using FluentValidation;
-using ProductService.Dtos;
+using ProductService.Application.Dtos.Request;
 
-namespace ProductService.Validators;
+namespace ProductService.Presentation.Validators;
 
 public class CreateProductDtoValidator : AbstractValidator<CreateProductDto>
 {

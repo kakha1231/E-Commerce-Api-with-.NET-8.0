@@ -1,7 +1,7 @@
 ﻿using Common.Enums;
-using ProductService.Models;
+using ProductService.Domain.Models;
 
-namespace ProductService.Dtos;
+namespace ProductService.Application.Dtos.Request;
 
 public class CreateProductDto
 {
