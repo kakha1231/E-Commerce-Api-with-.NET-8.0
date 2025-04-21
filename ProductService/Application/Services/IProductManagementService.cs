@@ -34,7 +34,7 @@ public interface IProductManagementService
     /// </summary>
     /// <param name="createProductDto">Data transfer object containing product details.</param>
     /// <returns>A service response indicating success or failure, along with the created product.</returns>
-    public Task<ServiceResponse<Product>> CreateProduct(CreateProductDto createProductDto);
+   // public Task<ServiceResponse<Product>> CreateProduct(CreateProductDto createProductDto);
     
     /// <summary>
     /// Updates an existing product in the database.
@@ -42,12 +42,12 @@ public interface IProductManagementService
     /// <param name="id">The ID of the product to update.</param>
     /// <param name="enProductDto">Data transfer object containing updated product details.</param>
     /// <returns>A service response indicating success or failure, along with the updated product.</returns>
-    public Task<ServiceResponse<Product>> UpdateProduct(int id,CreateProductDto editProductDto);
+  //  public Task<ServiceResponse<Product>> UpdateProduct(int id,CreateProductDto editProductDto);
    
     /// <summary>
     /// Deletes a product from the database by its ID.
     /// </summary>
     /// <param name="id">The ID of the product to delete.</param>
     /// <returns>A service response indicating success or failure.</returns>
-    public Task<ServiceResponse<Product>> DeleteProduct(int id);
+  //  public Task<ServiceResponse<Product>> DeleteProduct(int id);
 }

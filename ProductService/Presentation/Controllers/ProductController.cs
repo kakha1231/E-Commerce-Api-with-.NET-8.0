@@ -1,5 +1,11 @@
-﻿using FluentValidation;
+﻿using ErrorOr;
+using FluentValidation;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using ProductService.Application.Commands.CreateProduct;
+using ProductService.Application.Commands.DeleteProduct;
+using ProductService.Application.Commands.UpdateProduct;
 using ProductService.Application.Dtos.Request;
 using ProductService.Application.Services;
 
@@ -15,16 +21,17 @@ public class ProductController : Controller
 {
     private readonly IProductManagementService _productManagementService;
     private readonly IValidator<CreateProductDto> _validator;
-    
+    private readonly ISender _sender;
     /// <summary>
     /// Initializes a new instance of the <see cref="ProductController"/> class.
     /// </summary>
     /// <param name="productManagementService">Service for managing product-related operations.</param>
     /// <param name="validator">Validator for validating product creation and update requests.</param>
-    public ProductController(IProductManagementService productManagementService, IValidator<CreateProductDto> validator)
+    public ProductController(IProductManagementService productManagementService, IValidator<CreateProductDto> validator, ISender sender)
     {
         _productManagementService = productManagementService;
         _validator = validator;
+        _sender = sender;
     }
 
     /// <summary>
@@ -83,10 +90,14 @@ public class ProductController : Controller
         {
             return BadRequest(validationResult.ToDictionary());
         }
-        
-        var response = await _productManagementService.CreateProduct(createProductDto);
 
-        return CreatedAtAction(nameof(GetProduct), new { id = response.Data.Id }, response.Data);
+        var command = new CreateProductCommand(createProductDto);
+        
+        var result = await _sender.Send(command);
+
+        return result.Match(
+            Ok,
+            Problem);
     }
 
     /// <summary>
@@ -108,14 +119,13 @@ public class ProductController : Controller
             return BadRequest(validationResult.ToDictionary());
         }
 
-        var response = await _productManagementService.UpdateProduct(id, editProductDto);
+        var command = new UpdateProductCommand(id, editProductDto);
 
-        if (!response.Success)
-        {
-            return NotFound(response.Message);
-        }
+        var result = await _sender.Send(command);
         
-        return Ok(response.Message);
+        return result.Match(
+            Ok,
+            Problem);;
     }
 
     /// <summary>
@@ -128,15 +138,60 @@ public class ProductController : Controller
     [HttpDelete("/delete-product/{id}")]
     public async Task<IActionResult> DeleteProduct(int id)
     {
-        var response = await _productManagementService.DeleteProduct(id);
+        var command = new DeleteProductCommand(id);
 
-        if (!response.Success)
-        {
-            return NotFound(response.Message);
-        }
-        
-        return Ok(response.Message);
+        var result = await _sender.Send(command);
+
+        return result.Match(
+            Ok,
+            Problem);
     }
     
+    
+    /// <summary>
+    /// Converts a list of domain errors into a standardized <see cref="IActionResult"/> response.
+    /// </summary>
+    /// <param name="errors">A list of <see cref="Error"/> instances representing domain or application-level errors.</param>
+    /// <returns>
+    /// A standardized <see cref="IActionResult"/> representing the error response,
+    /// with an appropriate HTTP status code and error description.
+    /// </returns>
+    /// <remarks>
+    /// Maps error types to the following HTTP status codes:
+    /// <list type="bullet">
+    ///   <item><description><see cref="ErrorType.NotFound"/> → 404 Not Found</description></item>
+    ///   <item><description><see cref="ErrorType.Validation"/> → 400 Bad Request</description></item>
+    ///   <item><description><see cref="ErrorType.Conflict"/> → 409 Conflict</description></item>
+    ///   <item><description>Any other error → 500 Internal Server Error</description></item>
+    /// </list>
+    /// </remarks>
+    private IActionResult Problem(List<Error> errors)
+    {
+
+        if (errors.All(error => error.Type == ErrorType.Validation))
+        {
+            var modelStateDictionary = new ModelStateDictionary();
+
+            foreach (var err in errors)
+            {
+                modelStateDictionary.AddModelError(
+                    err.Code,
+                    err.Description);
+            }
+
+            return ValidationProblem(modelStateDictionary);
+        }
+        var firstError = errors.First();
+
+        var statusCode = firstError.Type switch
+        {
+            ErrorType.NotFound => StatusCodes.Status404NotFound,
+            ErrorType.Validation => StatusCodes.Status400BadRequest,
+            ErrorType.Conflict => StatusCodes.Status409Conflict,
+            _ => StatusCodes.Status500InternalServerError 
+        };
+        
+        return Problem(statusCode: statusCode, title: firstError.Description);
+    }
     
 }
