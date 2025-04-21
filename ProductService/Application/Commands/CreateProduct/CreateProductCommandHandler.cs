@@ -1,8 +1,8 @@
 ﻿using Common.Dtos.Response;
 using ErrorOr;
 using MediatR;
-using ProductService.Domain.Models;
-using ProductService.Infrastructure.Entity;
+using ProductService.Domain.Entity;
+using ProductService.Infrastructure.Data;
 
 namespace ProductService.Application.Commands.CreateProduct;
 

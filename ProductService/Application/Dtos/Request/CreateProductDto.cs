@@ -1,5 +1,5 @@
 ﻿using Common.Enums;
-using ProductService.Domain.Models;
+using ProductService.Domain.Entity;
 
 namespace ProductService.Application.Dtos.Request;
 

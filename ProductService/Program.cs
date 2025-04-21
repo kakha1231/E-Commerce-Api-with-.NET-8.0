@@ -1,13 +1,7 @@
-using FluentValidation;
-using Microsoft.EntityFrameworkCore;
 using ProductService.Application;
-using ProductService.Application.Dtos.Request;
-using ProductService.Application.Services;
 using ProductService.Infrastructure;
-using ProductService.Infrastructure.Entity;
 using ProductService.Presentation;
 using ProductService.Presentation.Middlewares;
-using ProductService.Presentation.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
 

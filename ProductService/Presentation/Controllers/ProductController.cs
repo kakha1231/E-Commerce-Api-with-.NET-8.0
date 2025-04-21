@@ -7,7 +7,8 @@ using ProductService.Application.Commands.CreateProduct;
 using ProductService.Application.Commands.DeleteProduct;
 using ProductService.Application.Commands.UpdateProduct;
 using ProductService.Application.Dtos.Request;
-using ProductService.Application.Services;
+using ProductService.Application.Queries.GetProductById;
+using ProductService.Application.Queries.GetProducts;
 
 namespace ProductService.Presentation.Controllers;
 
@@ -19,7 +20,6 @@ namespace ProductService.Presentation.Controllers;
 [ApiController]
 public class ProductController : Controller
 {
-    private readonly IProductManagementService _productManagementService;
     private readonly IValidator<CreateProductDto> _validator;
     private readonly ISender _sender;
     /// <summary>
@@ -27,9 +27,8 @@ public class ProductController : Controller
     /// </summary>
     /// <param name="productManagementService">Service for managing product-related operations.</param>
     /// <param name="validator">Validator for validating product creation and update requests.</param>
-    public ProductController(IProductManagementService productManagementService, IValidator<CreateProductDto> validator, ISender sender)
+    public ProductController(IValidator<CreateProductDto> validator, ISender sender)
     {
-        _productManagementService = productManagementService;
         _validator = validator;
         _sender = sender;
     }
@@ -49,9 +48,11 @@ public class ProductController : Controller
     public async Task<IActionResult> GetProducts([FromQuery] string? category, string? searchString, decimal? minPrice = 0,
         decimal? maxPrice = 9999999, int page = 1, int pageSize = 20)
     {
-        var response = await _productManagementService.GetProducts(category, searchString, minPrice, maxPrice, page, pageSize);
+        var query = new GetProductsQuery(category, searchString, minPrice, maxPrice, page, pageSize);
+
+        var products = await _sender.Send(query);
         
-        return Ok(response.Data);
+        return Ok(products);
     }
     
     /// <summary>
@@ -64,14 +65,13 @@ public class ProductController : Controller
     [HttpGet("/products/{id}")]
     public async Task<IActionResult> GetProduct(int id)
     {
-        var response = await _productManagementService.GetProductById(id);
+        var query = new GetProductByIdQuery(id);
 
-        if (!response.Success)
-        {
-            return NotFound(response.Message);
-        }
-        
-        return Ok(response.Data);
+        var result = await _sender.Send(query);
+
+       return result.Match(
+            Ok,
+            Problem);
     }
 
     /// <summary>

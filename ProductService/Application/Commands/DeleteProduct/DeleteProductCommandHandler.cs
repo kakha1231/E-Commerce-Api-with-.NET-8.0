@@ -2,8 +2,7 @@
 using ErrorOr;
 using MediatR;
 using ProductService.Domain.Errors;
-using ProductService.Domain.Models;
-using ProductService.Infrastructure.Entity;
+using ProductService.Infrastructure.Data;
 
 namespace ProductService.Application.Commands.DeleteProduct;
 

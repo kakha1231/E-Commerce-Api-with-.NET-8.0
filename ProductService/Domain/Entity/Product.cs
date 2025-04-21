@@ -1,6 +1,6 @@
 ﻿using Common.Enums;
 
-namespace ProductService.Domain.Models;
+namespace ProductService.Domain.Entity;
 
 public class Product
 {
