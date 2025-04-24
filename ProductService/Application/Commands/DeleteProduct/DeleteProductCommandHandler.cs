@@ -8,24 +8,23 @@ namespace ProductService.Application.Commands.DeleteProduct;
 
 public class DeleteProductCommandHandler : IRequestHandler<DeleteProductCommand,ErrorOr<string>>
 {
-    private readonly ProductDbContext _context;
+    private readonly IProductRepository _productRepository;
 
-    public DeleteProductCommandHandler(ProductDbContext context)
+    public DeleteProductCommandHandler( IProductRepository productRepository)
     {
-        _context = context;
+        _productRepository = productRepository;
     }
 
     public async Task<ErrorOr<string>> Handle(DeleteProductCommand request, CancellationToken cancellationToken)
     {
-        var product = await _context.Products.FindAsync(request.Id, cancellationToken);
+        var product = await _productRepository.GetProductById(request.Id);
       
         if (product == null)
         {
             return Errors.ProductNotFound;
         }
-        
-        _context.Products.Remove(product);
-        await _context.SaveChangesAsync(cancellationToken);
+
+        await _productRepository.DeleteProduct(product);
 
         return "Product Deleted";
     }

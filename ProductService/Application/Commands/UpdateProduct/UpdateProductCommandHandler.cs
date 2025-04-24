@@ -10,16 +10,16 @@ namespace ProductService.Application.Commands.UpdateProduct;
 
 public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand, ErrorOr<Product>>
 {
-    private readonly ProductDbContext _context;
+    private readonly IProductRepository _productRepository;
 
-    public UpdateProductCommandHandler(ProductDbContext context)
+    public UpdateProductCommandHandler(IProductRepository productRepository)
     {
-        _context = context;
+        _productRepository = productRepository;
     }
 
     public async Task<ErrorOr<Product>> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
     {
-        var product = await _context.Products.FindAsync(request.Id, cancellationToken);
+        var product = await _productRepository.GetProductById(request.Id);
 
         if (product == null)
         {
@@ -31,9 +31,8 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand,
         product.Price = request.ProductDto.Price;
         product.Category = Enum.Parse<Category>(request.ProductDto.Category, true);
         product.InStock = request.ProductDto.InStock;
-        
-        _context.Products.Update(product);
-        await _context.SaveChangesAsync(cancellationToken);
+
+        await _productRepository.UpdateProduct(product);
 
         return product;
     }

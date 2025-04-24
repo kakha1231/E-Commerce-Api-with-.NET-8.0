@@ -8,19 +8,18 @@ namespace ProductService.Application.Commands.CreateProduct;
 
 public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand,ErrorOr<Product>>
 {
-    private readonly ProductDbContext _context;
+    private readonly IProductRepository _productRepository;
 
-    public CreateProductCommandHandler(ProductDbContext context)
+    public CreateProductCommandHandler( IProductRepository productRepository)
     {
-        _context = context;
+        _productRepository = productRepository;
     }
 
     public async Task<ErrorOr<Product>> Handle(CreateProductCommand request, CancellationToken cancellationToken)
     {
         var product = request.ProductDto.CreateProduct();
 
-        _context.Products.Add(product);
-        await _context.SaveChangesAsync(cancellationToken);
+        await _productRepository.CreateProduct(product);
 
         return product;
     }

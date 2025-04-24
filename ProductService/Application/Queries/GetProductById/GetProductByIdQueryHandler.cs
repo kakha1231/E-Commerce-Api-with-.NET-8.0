@@ -1,5 +1,4 @@
-﻿using Common.Dtos.Response;
-using ErrorOr;
+﻿using ErrorOr;
 using MediatR;
 using ProductService.Domain.Entity;
 using ProductService.Domain.Errors;
@@ -9,22 +8,23 @@ namespace ProductService.Application.Queries.GetProductById;
 
 public class GetProductByIdQueryHandler : IRequestHandler<GetProductByIdQuery, ErrorOr<Product>>
 {
-    private readonly ProductDbContext _context;
+    private readonly IProductRepository _productRepository;
 
-    public GetProductByIdQueryHandler(ProductDbContext context)
+    public GetProductByIdQueryHandler( IProductRepository productRepository)
     {
-        _context = context;
+        _productRepository = productRepository;
+        
     }
 
     public async Task<ErrorOr<Product>> Handle(GetProductByIdQuery request, CancellationToken cancellationToken)
     {
-        var product = await _context.Products.FindAsync(request.Id, cancellationToken);
+        var product = await _productRepository.GetProductById(request.Id);
 
         if (product == null)
         {
             return Errors.ProductNotFound;
         }
-
+        
         return product;
     }
 }

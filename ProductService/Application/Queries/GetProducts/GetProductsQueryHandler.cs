@@ -1,7 +1,4 @@
-﻿using Common.Enums;
-using ErrorOr;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
+﻿using MediatR;
 using ProductService.Domain.Entity;
 using ProductService.Infrastructure.Data;
 
@@ -9,37 +6,23 @@ namespace ProductService.Application.Queries.GetProducts;
 
 public class GetProductsQueryHandler : IRequestHandler<GetProductsQuery,List<Product>>
 {
-    private readonly ProductDbContext _context;
+    private readonly IProductRepository _productRepository;
 
-    public GetProductsQueryHandler(ProductDbContext context)
+    public GetProductsQueryHandler( IProductRepository productRepository)
     {
-        _context = context;
+        _productRepository = productRepository;
     }
 
     public async Task<List<Product>> Handle(GetProductsQuery request, CancellationToken cancellationToken)
     {
-        var query = _context.Products.AsQueryable();
-
-        if (!string.IsNullOrWhiteSpace(request.SearchString))
-        {
-            query = query.Where(p => p.Name.Contains(request.SearchString));
-        }
-
-        if (!string.IsNullOrWhiteSpace(request.Category))
-        {
-            var parsedCategory = Enum.Parse<Category>(request.Category,true);
-            
-            query = query.Where(p => p.Category == parsedCategory);
-        }
+        var products = await _productRepository.GetProducts(
+            category: request.Category,
+            searchString: request.SearchString,
+            minPrice: request.MinPrice,
+            maxPrice: request.MaxPrice,
+            page: request.Page,
+            pageSize: request.PageSize);
         
-        query = query.Where(p => p.Price >= request.MinPrice && p.Price <= request.MaxPrice && p.InStock);
-        
-        var products = await query
-            .OrderBy(p => p.Id) 
-            .Skip((request.Page - 1) * request.PageSize)
-            .Take(request.PageSize)
-            .ToListAsync(cancellationToken: cancellationToken);
-
         return products;
     }
 }
