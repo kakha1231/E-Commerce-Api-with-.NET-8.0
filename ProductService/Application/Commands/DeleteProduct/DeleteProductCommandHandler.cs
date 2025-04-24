@@ -1,5 +1,4 @@
-﻿using Common.Dtos.Response;
-using ErrorOr;
+﻿using ErrorOr;
 using MediatR;
 using ProductService.Domain.Errors;
 using ProductService.Infrastructure.Data;

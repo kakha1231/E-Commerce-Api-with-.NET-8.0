@@ -1,6 +1,5 @@
-﻿using Common.Dtos.Response;
-using Common.Enums;
-using ErrorOr;
+﻿using ErrorOr;
+using Mapster;
 using MediatR;
 using ProductService.Domain.Entity;
 using ProductService.Domain.Errors;
@@ -25,12 +24,8 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand,
         {
             return Errors.ProductNotFound;
         }
-        
-        product.Name = request.ProductDto.Name;
-        product.Description = request.ProductDto.Description;
-        product.Price = request.ProductDto.Price;
-        product.Category = Enum.Parse<Category>(request.ProductDto.Category, true);
-        product.InStock = request.ProductDto.InStock;
+
+         product = request.ProductDto.Adapt(product);
 
         await _productRepository.UpdateProduct(product);
 

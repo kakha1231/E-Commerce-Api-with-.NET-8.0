@@ -1,5 +1,5 @@
-﻿using Common.Dtos.Response;
-using ErrorOr;
+﻿using ErrorOr;
+using Mapster;
 using MediatR;
 using ProductService.Domain.Entity;
 using ProductService.Infrastructure.Data;
@@ -17,7 +17,7 @@ public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand,
 
     public async Task<ErrorOr<Product>> Handle(CreateProductCommand request, CancellationToken cancellationToken)
     {
-        var product = request.ProductDto.CreateProduct();
+        var product = request.ProductDto.Adapt<Product>();
 
         await _productRepository.CreateProduct(product);
 
