@@ -1,8 +1,8 @@
 ﻿using System.Reflection;
+using Common.Behaviors;
 using FluentValidation;
 using Mapster;
 using MapsterMapper;
-using OrderService.Application.Common.Behaviors;
 
 namespace OrderService.Application;
 

@@ -20,16 +20,13 @@ namespace ProductService.Presentation.Controllers;
 [ApiController]
 public class ProductController : Controller
 {
-    private readonly IValidator<CreateProductDto> _validator;
     private readonly ISender _sender;
     /// <summary>
     /// Initializes a new instance of the <see cref="ProductController"/> class.
     /// </summary>
     /// <param name="productManagementService">Service for managing product-related operations.</param>
-    /// <param name="validator">Validator for validating product creation and update requests.</param>
-    public ProductController(IValidator<CreateProductDto> validator, ISender sender)
+    public ProductController(ISender sender)
     {
-        _validator = validator;
         _sender = sender;
     }
 
@@ -84,13 +81,6 @@ public class ProductController : Controller
     [HttpPost("/create-product")]
     public async Task<IActionResult> CreateProduct(CreateProductDto createProductDto)
     {
-        var validationResult = _validator.Validate(createProductDto);
-
-        if (!validationResult.IsValid)
-        {
-            return BadRequest(validationResult.ToDictionary());
-        }
-
         var command = new CreateProductCommand(createProductDto);
         
         var result = await _sender.Send(command);
@@ -112,13 +102,6 @@ public class ProductController : Controller
     [HttpPut("/update-product/{id}")]
     public async Task<IActionResult> UpdateProduct(int id,CreateProductDto editProductDto)
     {
-        var validationResult = _validator.Validate(editProductDto);
-
-        if (!validationResult.IsValid)
-        {
-            return BadRequest(validationResult.ToDictionary());
-        }
-
         var command = new UpdateProductCommand(id, editProductDto);
 
         var result = await _sender.Send(command);

@@ -1,9 +1,8 @@
 ﻿using ErrorOr;
 using FluentValidation;
 using MediatR;
-using OrderService.Domain.Agregates;
 
-namespace OrderService.Application.Common.Behaviors;
+namespace Common.Behaviors;
 
 public class ValidationBehavior<TRequest,TResponse> : IPipelineBehavior<TRequest,TResponse> 
     where TRequest : IRequest<TResponse> 
@@ -35,6 +34,6 @@ public class ValidationBehavior<TRequest,TResponse> : IPipelineBehavior<TRequest
             input.PropertyName,
             input.ErrorMessage));
 
-        return (dynamic)errors;;
+        return (dynamic)errors;
     }
 }
