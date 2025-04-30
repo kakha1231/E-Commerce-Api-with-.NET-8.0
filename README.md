@@ -62,19 +62,8 @@ Follow the steps below to get the application running locally.
 ## Configuration
 Key configuration files:
 - **`appsettings.Docker.json`**: Contains environment-specific settings for services, e.g., database connection strings, message broker credentials.
+- **`appsettings.Development.json`**: Contains settings for services, e.g., database connection strings, message broker credentials. - (can be used for debugging separate services)
 - **`compose.yaml`**: Defines the multi-container Docker application setup.
-- **Keycloak Settings**:
-    - Realm: `E-Commerce` (default), can also be changed.
-    - Admin User: `admin`,
-    - Admin Password: `admin123`,
-  - **Client**:
-      - Create a client named `"my-api-client"`.
-      - Configure the client as **public**.
-     
-
-> ⚠ You need to configure Keycloak manually for now. For more details, refer to [Keycloak Documentation](https://www.keycloak.org/documentation).
-
-  
 
 ## API Documentation
 - Swagger endpoints:
