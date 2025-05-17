@@ -1,6 +1,6 @@
 ﻿using Common.Dtos;
+using Common.Dtos.Common;
 using Common.Enums;
-using OrderService.Application.Dtos.Request;
 
 namespace Common.Events;
 

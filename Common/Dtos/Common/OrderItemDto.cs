@@ -1,4 +1,4 @@
-﻿namespace OrderService.Application.Dtos.Request;
+﻿namespace Common.Dtos.Common;
 
 public class OrderItemDto
 {

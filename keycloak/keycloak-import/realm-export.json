@@ -29,11 +29,11 @@
   "sslRequired" : "external",
   "registrationAllowed" : false,
   "registrationEmailAsUsername" : false,
-  "rememberMe" : false,
+  "rememberMe" : true,
   "verifyEmail" : false,
   "loginWithEmailAllowed" : true,
   "duplicateEmailsAllowed" : false,
-  "resetPasswordAllowed" : false,
+  "resetPasswordAllowed" : true,
   "editUsernameAllowed" : false,
   "bruteForceProtected" : false,
   "permanentLockout" : false,
@@ -47,32 +47,41 @@
   "failureFactor" : 30,
   "roles" : {
     "realm" : [ {
-      "id" : "e3102b3b-3968-4b9c-afc3-d1da6881c027",
-      "name" : "uma_authorization",
-      "description" : "${role_uma_authorization}",
-      "composite" : false,
-      "clientRole" : false,
-      "containerId" : "4f7754e0-e7b8-40a6-8e20-8744a39eb5ac",
-      "attributes" : { }
-    }, {
       "id" : "99bdfcf0-9b84-4264-b304-76ae664da8f1",
       "name" : "default-roles-e-commerce",
       "description" : "${role_default-roles}",
       "composite" : true,
       "composites" : {
-        "realm" : [ "offline_access", "uma_authorization" ],
+        "realm" : [ "User" ]
+      },
+      "clientRole" : false,
+      "containerId" : "4f7754e0-e7b8-40a6-8e20-8744a39eb5ac",
+      "attributes" : { }
+    }, {
+      "id" : "5d3bab4c-d704-4f58-b64d-74d849c9c4f9",
+      "name" : "User",
+      "description" : "basic user can access product view them and place orders",
+      "composite" : true,
+      "composites" : {
         "client" : {
-          "account" : [ "manage-account", "view-profile" ]
+          "broker" : [ "read-token" ],
+          "account" : [ "manage-account", "view-consent", "view-applications", "view-groups", "manage-account-links", "manage-consent", "view-profile", "delete-account" ]
         }
       },
       "clientRole" : false,
       "containerId" : "4f7754e0-e7b8-40a6-8e20-8744a39eb5ac",
       "attributes" : { }
     }, {
-      "id" : "2779b2e4-110d-483a-a349-a9496c7d5521",
-      "name" : "offline_access",
-      "description" : "${role_offline-access}",
-      "composite" : false,
+      "id" : "dc3bbb9c-c897-44c2-9ffc-0095514e18c9",
+      "name" : "Admin",
+      "description" : "manages whole realm and application can create delete or edit everything",
+      "composite" : true,
+      "composites" : {
+        "client" : {
+          "broker" : [ "read-token" ],
+          "account" : [ "manage-account", "view-consent", "view-applications", "view-groups", "manage-account-links", "manage-consent", "view-profile", "delete-account" ]
+        }
+      },
       "clientRole" : false,
       "containerId" : "4f7754e0-e7b8-40a6-8e20-8744a39eb5ac",
       "attributes" : { }
@@ -404,6 +413,50 @@
     "notBefore" : 0,
     "groups" : [ ]
   }, {
+    "id" : "3fad5e7a-b2e7-4f57-8d15-b14c973efec0",
+    "username" : "kakhaf_gsdfgsdg_01eda0",
+    "firstName" : "kakhaf",
+    "lastName" : "gsdfgsdg",
+    "email" : "kakhakarenashvili@gmail.com",
+    "emailVerified" : false,
+    "createdTimestamp" : 1746560862090,
+    "enabled" : true,
+    "totp" : false,
+    "credentials" : [ {
+      "id" : "7e2a8d68-6632-494e-9507-8e0e86fd3630",
+      "type" : "password",
+      "createdDate" : 1746560862150,
+      "secretData" : "{\"value\":\"4YLVsSPcPn2kMKDA+L3a1PCL/uc0xnXSfUWTaHDyAxc=\",\"salt\":\"lK9LTE3d5GKI1NqWo8K3Kg==\",\"additionalParameters\":{}}",
+      "credentialData" : "{\"hashIterations\":5,\"algorithm\":\"argon2\",\"additionalParameters\":{\"hashLength\":[\"32\"],\"memory\":[\"7168\"],\"type\":[\"id\"],\"version\":[\"1.3\"],\"parallelism\":[\"1\"]}}"
+    } ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "default-roles-e-commerce", "Admin" ],
+    "notBefore" : 0,
+    "groups" : [ ]
+  }, {
+    "id" : "94229aff-710b-436c-8ea1-a3f3769bb615",
+    "username" : "srinddadsasdfsdf_gsdfgsdg_1e978a",
+    "firstName" : "srinddadsasdfsdf",
+    "lastName" : "gsdfgsdg",
+    "email" : "3414124dfasfasf@gmail.com",
+    "emailVerified" : false,
+    "createdTimestamp" : 1746559187130,
+    "enabled" : true,
+    "totp" : false,
+    "credentials" : [ {
+      "id" : "6edc2834-5e33-419d-9330-5f2944d554bc",
+      "type" : "password",
+      "createdDate" : 1746559187232,
+      "secretData" : "{\"value\":\"ahXyFWt7pyZdwQHN8ccBiJyTYlDIoUStm1L0NflKQcI=\",\"salt\":\"SDpBPL1qdFTvONQyZ24VgA==\",\"additionalParameters\":{}}",
+      "credentialData" : "{\"hashIterations\":5,\"algorithm\":\"argon2\",\"additionalParameters\":{\"hashLength\":[\"32\"],\"memory\":[\"7168\"],\"type\":[\"id\"],\"version\":[\"1.3\"],\"parallelism\":[\"1\"]}}"
+    } ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "default-roles-e-commerce", "User" ],
+    "notBefore" : 0,
+    "groups" : [ ]
+  }, {
     "id" : "8d01aa25-3fad-4e38-b46a-2e6002da0019",
     "username" : "srin_test1_6233bc",
     "firstName" : "srin",
@@ -469,10 +522,6 @@
     "realmRoles" : [ "default-roles-e-commerce" ],
     "notBefore" : 0,
     "groups" : [ ]
-  } ],
-  "scopeMappings" : [ {
-    "clientScope" : "offline_access",
-    "roles" : [ "offline_access" ]
   } ],
   "clientScopeMappings" : {
     "account" : [ {
@@ -1353,6 +1402,10 @@
     "strictTransportSecurity" : "max-age=31536000; includeSubDomains"
   },
   "smtpServer" : { },
+  "loginTheme" : "keycloak",
+  "accountTheme" : "",
+  "adminTheme" : "",
+  "emailTheme" : "",
   "eventsEnabled" : false,
   "eventsListeners" : [ "jboss-logging" ],
   "enabledEventTypes" : [ ],
@@ -2104,13 +2157,18 @@
   "firstBrokerLoginFlow" : "first broker login",
   "attributes" : {
     "cibaBackchannelTokenDeliveryMode" : "poll",
-    "cibaExpiresIn" : "120",
     "cibaAuthRequestedUserHint" : "login_hint",
-    "oauth2DeviceCodeLifespan" : "600",
     "oauth2DevicePollingInterval" : "5",
-    "parRequestUriLifespan" : "60",
+    "clientOfflineSessionMaxLifespan" : "0",
+    "clientSessionIdleTimeout" : "0",
+    "clientOfflineSessionIdleTimeout" : "0",
     "cibaInterval" : "5",
-    "realmReusableOtpCode" : "false"
+    "realmReusableOtpCode" : "false",
+    "cibaExpiresIn" : "120",
+    "oauth2DeviceCodeLifespan" : "600",
+    "parRequestUriLifespan" : "60",
+    "clientSessionMaxLifespan" : "0",
+    "darkMode" : "true"
   },
   "keycloakVersion" : "26.1.3",
   "userManagedAccessAllowed" : false,

@@ -1,4 +1,4 @@
-﻿namespace Common.Dtos.Response;
+﻿namespace Common.Dtos.Common;
 
 public class ServiceResponse<T>
 {

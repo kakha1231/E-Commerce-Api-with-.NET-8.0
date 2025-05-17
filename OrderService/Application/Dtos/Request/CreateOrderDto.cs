@@ -1,4 +1,6 @@
-﻿namespace OrderService.Application.Dtos.Request;
+﻿using Common.Dtos.Common;
+
+namespace OrderService.Application.Dtos.Request;
 
 public class CreateOrderDto
 {

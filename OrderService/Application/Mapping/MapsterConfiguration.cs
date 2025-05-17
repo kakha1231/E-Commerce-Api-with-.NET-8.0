@@ -1,4 +1,5 @@
-﻿using Common.Events;
+﻿using Common.Dtos.Common;
+using Common.Events;
 using Mapster;
 using OrderService.Application.Dtos.Request;
 using OrderService.Domain.Agregates;
