@@ -5,7 +5,7 @@
   "defaultSignatureAlgorithm" : "RS256",
   "revokeRefreshToken" : false,
   "refreshTokenMaxReuse" : 0,
-  "accessTokenLifespan" : 300,
+  "accessTokenLifespan" : 1500,
   "accessTokenLifespanForImplicitFlow" : 900,
   "ssoSessionIdleTimeout" : 1800,
   "ssoSessionMaxLifespan" : 36000,
@@ -435,6 +435,28 @@
     "notBefore" : 0,
     "groups" : [ ]
   }, {
+    "id" : "6f186265-a2b0-462d-80bd-0f70082631ef",
+    "username" : "kakhaf_gsdfgsdg_5c3b8b",
+    "firstName" : "kakhaf",
+    "lastName" : "gsdfgsdg",
+    "email" : "kakha1karenashvili@gmail.com",
+    "emailVerified" : false,
+    "createdTimestamp" : 1747657842546,
+    "enabled" : true,
+    "totp" : false,
+    "credentials" : [ {
+      "id" : "347c586a-0255-43fc-9045-ea4f8e504b91",
+      "type" : "password",
+      "createdDate" : 1747657842659,
+      "secretData" : "{\"value\":\"WcKuzvbrRu3G7qe5KptlUwxCdvYbOMH2+f9GmNakNf8=\",\"salt\":\"uJFnqSGOsahUJVEkIl4EuQ==\",\"additionalParameters\":{}}",
+      "credentialData" : "{\"hashIterations\":5,\"algorithm\":\"argon2\",\"additionalParameters\":{\"hashLength\":[\"32\"],\"memory\":[\"7168\"],\"type\":[\"id\"],\"version\":[\"1.3\"],\"parallelism\":[\"1\"]}}"
+    } ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "default-roles-e-commerce" ],
+    "notBefore" : 0,
+    "groups" : [ ]
+  }, {
     "id" : "94229aff-710b-436c-8ea1-a3f3769bb615",
     "username" : "srinddadsasdfsdf_gsdfgsdg_1e978a",
     "firstName" : "srinddadsasdfsdf",
@@ -658,7 +680,7 @@
     "defaultClientScopes" : [ "web-origins", "acr", "profile", "roles", "basic", "email" ],
     "optionalClientScopes" : [ "address", "phone", "offline_access", "organization", "microprofile-jwt" ]
   }, {
-    "id" : "e651133b-d804-43ab-ae86-a70e22b8d950",
+    "id" : "dd5c624d-8213-4534-88ad-2c273ae2f45d",
     "clientId" : "my-api-client",
     "name" : "",
     "description" : "",
@@ -685,12 +707,28 @@
       "realm_client" : "false",
       "oidc.ciba.grant.enabled" : "false",
       "backchannel.logout.session.required" : "true",
+      "frontchannel.logout.session.required" : "true",
       "oauth2.device.authorization.grant.enabled" : "false",
+      "display.on.consent.screen" : "false",
       "backchannel.logout.revoke.offline.tokens" : "false"
     },
     "authenticationFlowBindingOverrides" : { },
     "fullScopeAllowed" : true,
     "nodeReRegistrationTimeout" : -1,
+    "protocolMappers" : [ {
+      "id" : "bc48e08f-79a5-414d-ad5a-114fbff10359",
+      "name" : "Audience",
+      "protocol" : "openid-connect",
+      "protocolMapper" : "oidc-audience-mapper",
+      "consentRequired" : false,
+      "config" : {
+        "included.client.audience" : "my-api-client",
+        "id.token.claim" : "false",
+        "lightweight.claim" : "false",
+        "access.token.claim" : "true",
+        "introspection.token.claim" : "true"
+      }
+    } ],
     "defaultClientScopes" : [ "web-origins", "acr", "profile", "roles", "basic", "email" ],
     "optionalClientScopes" : [ "address", "phone", "offline_access", "organization", "microprofile-jwt" ]
   }, {
@@ -2161,13 +2199,18 @@
     "oauth2DevicePollingInterval" : "5",
     "clientOfflineSessionMaxLifespan" : "0",
     "clientSessionIdleTimeout" : "0",
+    "actionTokenGeneratedByUserLifespan.verify-email" : "",
+    "actionTokenGeneratedByUserLifespan.idp-verify-account-via-email" : "",
     "clientOfflineSessionIdleTimeout" : "0",
+    "actionTokenGeneratedByUserLifespan.execute-actions" : "",
     "cibaInterval" : "5",
     "realmReusableOtpCode" : "false",
     "cibaExpiresIn" : "120",
     "oauth2DeviceCodeLifespan" : "600",
     "parRequestUriLifespan" : "60",
     "clientSessionMaxLifespan" : "0",
+    "shortVerificationUri" : "",
+    "actionTokenGeneratedByUserLifespan.reset-credentials" : "",
     "darkMode" : "true"
   },
   "keycloakVersion" : "26.1.3",

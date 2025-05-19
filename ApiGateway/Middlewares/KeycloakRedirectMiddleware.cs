@@ -32,7 +32,7 @@ public class KeycloakRedirectMiddleware
         {
             string keycloakLoginPage =
                 $"http://localhost:8080/realms/{_configuration["Keycloak:Realm"]}/protocol/openid-connect/auth" +
-                "?client_id=my-api-client" +
+                $"?client_id={_configuration["Keycloak:Audience"]}" +
                 "&response_type=code";
             
             _logger.LogInformation("Redirecting unauthorized user to Keycloak login page: {Url}", keycloakLoginPage);

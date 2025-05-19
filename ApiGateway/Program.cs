@@ -12,7 +12,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer("Keycloak", options =>
     {
         options.Authority = $"http://{builder.Configuration["Keycloak:BaseUrl"]}/realms/{builder.Configuration["Keycloak:Realm"]}";
-        options.Audience = "my-api-client";
+        options.Audience = builder.Configuration["Keycloak:Audience"];
         options.RequireHttpsMetadata = false;
     });
 

@@ -1,6 +1,7 @@
-﻿using ErrorOr;
-using MapsterMapper;
+﻿using System.Security.Claims;
+using ErrorOr;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using OrderService.Application.Commands.CreateOrder;
@@ -27,6 +28,7 @@ public class OrderController : ControllerBase
     /// </summary>
     /// <returns>A list of orders.</returns>
     /// <response code="200">Returns the list of orders.</response>
+    [Authorize(Roles = "Admin")]
     [HttpGet("/orders")]
     public async Task<IActionResult> GetOrders()
     {
@@ -43,9 +45,12 @@ public class OrderController : ControllerBase
     /// <param name="userId">The user ID.</param>
     /// <returns>A list of orders belonging to the specified user.</returns>
     /// <response code="200">Returns the list of user-specific orders.</response>
+    [Authorize(Roles = "User")]
     [HttpGet("/myorders")]
-    public async Task<IActionResult> GetOrdersByUserId(string userId)
+    public async Task<IActionResult> GetOrdersByUserId()
     {
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        
         var query = new GetOrdersByUserIdQuery(userId);
         
         var queryResult = await _sender.Send(query);
@@ -60,6 +65,7 @@ public class OrderController : ControllerBase
     /// <returns>The requested order.</returns>
     /// <response code="200">Returns the requested order.</response>
     /// <response code="404">Order not found.</response>
+    [Authorize(Roles = "User, Admin")]
     [HttpGet("/orders/{id}")]
     public async Task<IActionResult> GetOrderById(int id)
     {
@@ -80,9 +86,12 @@ public class OrderController : ControllerBase
     /// <returns>The newly created order.</returns>
     /// <response code="200">Successfully creates and returns the new order.</response>
     /// <response code="400">If the request is invalid.</response>
+    [Authorize(Roles = "User, Admin")]
     [HttpPost("/create-order")]
-    public async Task<IActionResult> CreateOrder(CreateOrderDto orderDto, string userId)
+    public async Task<IActionResult> CreateOrder(CreateOrderDto orderDto)
     {
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        
         var command = new CreateOrderCommand(userId, orderDto);
         
         var result = await _sender.Send(command);
@@ -102,6 +111,7 @@ public class OrderController : ControllerBase
     /// <response code="200">Successfully updates and returns the order.</response>
     /// <response code="404">If the order with the given ID is not found.</response>
     /// <response code="400">If the status provided is invalid.</response>
+    [Authorize(Roles = "Admin")]
     [HttpPut("/update-order/{id}")]
     public async Task<IActionResult> UpdateOrderStatus(string status, int id)
     {
