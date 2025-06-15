@@ -1,6 +1,7 @@
 ﻿using ErrorOr;
 using FluentValidation;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using ProductService.Application.Commands.CreateProduct;
@@ -78,6 +79,7 @@ public class ProductController : Controller
     /// <returns>The created product.</returns>
     /// <response code="201">Returns the newly created product.</response>
     /// <response code="400">If the request data is invalid.</response>
+    [Authorize(Roles = "Admin")]
     [HttpPost("/create-product")]
     public async Task<IActionResult> CreateProduct(CreateProductDto createProductDto)
     {
@@ -99,6 +101,7 @@ public class ProductController : Controller
     /// <response code="200">Product was successfully updated.</response>
     /// <response code="400">If the request data is invalid.</response>
     /// <response code="404">If the product is not found.</response>
+    [Authorize(Roles = "Admin")]
     [HttpPut("/update-product/{id}")]
     public async Task<IActionResult> UpdateProduct(int id,CreateProductDto editProductDto)
     {
@@ -118,6 +121,7 @@ public class ProductController : Controller
     /// <returns>A message indicating the deletion status.</returns>
     /// <response code="200">Product was successfully deleted.</response>
     /// <response code="404">If the product is not found.</response>
+    [Authorize(Roles = "Admin")]
     [HttpDelete("/delete-product/{id}")]
     public async Task<IActionResult> DeleteProduct(int id)
     {
