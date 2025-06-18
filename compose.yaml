@@ -1,23 +1,5 @@
 ﻿services:
-  
-  rabbitmq:
-    image: rabbitmq:3-management
-    container_name: RabbitMQ
-    environment:
-      RABBITMQ_DEFAULT_USER: guest
-      RABBITMQ_DEFAULT_PASS: guest
-    healthcheck:
-      test: rabbitmq-diagnostics -q ping
-      interval: 20s
-      timeout: 10s
-      retries: 3
-    restart: always
-    networks:
-      - backend
-    ports:
-      - "5672:5672"         
-      - "15672:15672"      
-  
+    
   api-gateway:
     image: api-gateway
     build:
